@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package example.armeria.blog.grpc;
-option java_package = "example.armeria.blog.grpc";
+option java_package = "example.armeria.grpc.blog";
 option java_multiple_files = true;
 
 message BlogPost {

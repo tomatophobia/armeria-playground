@@ -2,7 +2,6 @@ package example.armeria.grpc.blog.client;
 
 import com.linecorp.armeria.client.grpc.GrpcClients;
 import com.linecorp.armeria.client.logging.LoggingClient;
-import example.armeria.blog.grpc.*;
 import example.armeria.grpc.blog.*;
 import io.grpc.StatusRuntimeException;
 import org.slf4j.Logger;

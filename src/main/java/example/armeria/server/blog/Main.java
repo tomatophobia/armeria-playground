@@ -1,5 +1,6 @@
 package example.armeria.server.blog;
 
+import com.linecorp.armeria.server.logging.LoggingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,7 @@ public class Main {
                         .build();
 
         return sb.http(port)
+                .decorator(LoggingService.newDecorator())
                 .annotatedService(new BlogService())
                 .serviceUnder("/docs", docService)
                 .build();

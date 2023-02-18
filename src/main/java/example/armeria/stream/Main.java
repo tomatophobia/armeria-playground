@@ -4,6 +4,7 @@ import com.linecorp.armeria.common.HttpData;
 import com.linecorp.armeria.common.HttpResponse;
 import com.linecorp.armeria.common.HttpResponseWriter;
 import com.linecorp.armeria.common.ResponseHeaders;
+import com.linecorp.armeria.common.stream.StreamMessage;
 import com.linecorp.armeria.server.Server;
 import com.linecorp.armeria.server.file.HttpFile;
 import org.slf4j.Logger;
@@ -37,6 +38,10 @@ public class Main {
                     HttpResponseWriter response = HttpResponse.streaming();
                     response.write(ResponseHeaders.of(200));
                     streamingFileResponse(response, new FileInputStream(new File(resource.toURI())));
+                    return response;
+                })
+                .service("/from-input-stream", (ctx, req) -> {
+                    HttpResponseWriter response = HttpResponse.streaming();
                     return response;
                 })
                 .build();

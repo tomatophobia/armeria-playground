@@ -28,13 +28,23 @@ public class BlogPost {
         this.modifiedAt = modifiedAt;
     }
 
-    public int getId() {return id;}
+    public int getId() {
+        return id;
+    }
 
-    public String getTitle() {return title;}
+    public String getTitle() {
+        return title;
+    }
 
-    public String getContent() {return content;}
+    public String getContent() {
+        return content;
+    }
 
-    public long getCreatedAt() {return createdAt;}
+    public long getCreatedAt() {
+        return createdAt;
+    }
 
-    public long getModifiedAt() {return modifiedAt;}
+    public long getModifiedAt() {
+        return modifiedAt;
+    }
 }

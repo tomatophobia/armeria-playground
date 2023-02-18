@@ -49,7 +49,7 @@ public final class BlogClient {
         }
     }
 
-    void testRun(){
+    void testRun() {
         createBlogPost("Another blog post", "Creating a post via createBlogPost().");
         deleteBlogPost(0);
         listBlogPosts();

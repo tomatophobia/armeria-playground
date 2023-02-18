@@ -15,14 +15,13 @@ public class Main {
         ServerBuilder sb = Server.builder();
         DocService docService =
                 DocService.builder()
-                          .exampleRequests(BlogService.class, "createBlogPost",
-                                           "{\"title\":\"My first blog\", \"content\":\"Hello Armeria!\"}")
-                          .build();
+                        .exampleRequests(BlogService.class, "createBlogPost", "{\"title\":\"My first blog\", \"content\":\"Hello Armeria!\"}")
+                        .build();
 
         return sb.http(port)
-                 .annotatedService(new BlogService())
+                .annotatedService(new BlogService())
                 .serviceUnder("/docs", docService)
-                 .build();
+                .build();
     }
 
     public static void main(String[] args) throws Exception {
@@ -33,6 +32,6 @@ public class Main {
         server.start().join();
 
         logger.info("Server has been started. Serving dummy service at http://127.0.0.1:{}",
-                    server.activeLocalPort());
+                server.activeLocalPort());
     }
 }

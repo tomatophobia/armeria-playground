@@ -1,0 +1,2 @@
+example.armeria.server.greeting.providers.MyFlagsProvider
+example.armeria.server.greeting.providers.MyFlagsProvider2

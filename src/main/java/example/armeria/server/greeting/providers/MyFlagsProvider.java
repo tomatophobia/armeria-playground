@@ -6,7 +6,7 @@ import com.linecorp.armeria.common.annotation.Nullable;
 public class MyFlagsProvider implements FlagsProvider {
     @Override
     public int priority() {
-        return 10;
+        return 30;
     }
 
     @Override

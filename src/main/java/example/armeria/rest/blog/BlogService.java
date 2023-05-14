@@ -1,4 +1,4 @@
-package example.armeria.server.blog;
+package example.armeria.rest.blog;
 
 import java.util.Collections;
 import java.util.Comparator;

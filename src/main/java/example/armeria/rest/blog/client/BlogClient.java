@@ -1,9 +1,8 @@
-package example.armeria.server.blog.client;
+package example.armeria.rest.blog.client;
 
 import com.linecorp.armeria.client.WebClient;
 import com.linecorp.armeria.client.logging.LoggingClient;
 import com.linecorp.armeria.common.AggregatedHttpResponse;
-import com.linecorp.armeria.common.HttpMethod;
 
 public final class BlogClient {
     public static void main(String[] args) {

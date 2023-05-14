@@ -1,4 +1,4 @@
-package example.armeria.server.greeting;
+package example.armeria.rest.greeting;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

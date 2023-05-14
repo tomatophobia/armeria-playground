@@ -1,11 +1,9 @@
-package example.armeria.server.greeting.providers;
+package example.armeria.rest.greeting.providers;
 
 import com.linecorp.armeria.common.FlagsProvider;
 import com.linecorp.armeria.common.RequestContext;
-import com.linecorp.armeria.common.annotation.Nullable;
 import com.linecorp.armeria.common.util.Sampler;
 import com.linecorp.armeria.common.util.TransportType;
-import io.micrometer.core.instrument.MeterRegistry;
 
 public class MyFlagsProvider2 implements FlagsProvider {
     @Override

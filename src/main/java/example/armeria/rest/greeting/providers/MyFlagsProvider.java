@@ -1,4 +1,4 @@
-package example.armeria.server.greeting.providers;
+package example.armeria.rest.greeting.providers;
 
 import com.linecorp.armeria.common.FlagsProvider;
 import com.linecorp.armeria.common.annotation.Nullable;

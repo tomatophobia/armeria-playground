@@ -1,4 +1,4 @@
-package example.armeria.server.blog;
+package example.armeria.rest.blog;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

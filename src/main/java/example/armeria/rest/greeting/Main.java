@@ -1,18 +1,12 @@
-package example.armeria.server.greeting;
+package example.armeria.rest.greeting;
 
-import com.linecorp.armeria.common.HttpResponse;
 import com.linecorp.armeria.server.Server;
 import com.linecorp.armeria.server.ServerBuilder;
-import com.linecorp.armeria.server.logging.LoggingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
-
-import static com.linecorp.armeria.common.HttpStatus.OK;
-
 public class Main {
-    private static final Logger logger = LoggerFactory.getLogger(example.armeria.server.blog.Main.class);
+    private static final Logger logger = LoggerFactory.getLogger(example.armeria.rest.blog.Main.class);
 
     static Server newServer(int port) {
         ServerBuilder sb = Server.builder();

@@ -14,6 +14,8 @@ repositories {
 dependencies {
     implementation "com.linecorp.armeria:armeria:1.23.1"
     implementation "com.linecorp.armeria:armeria-grpc:1.21.0"
+    implementation platform('com.linecorp.armeria:armeria-bom:1.23.1')
+    implementation 'com.linecorp.armeria:armeria-graphql'
     runtimeOnly "io.grpc:grpc-netty-shaded:1.52.1"
     implementation "io.grpc:grpc-protobuf:1.52.1"
     implementation "io.grpc:grpc-stub:1.52.1"

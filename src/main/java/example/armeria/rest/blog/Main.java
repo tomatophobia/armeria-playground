@@ -1,6 +1,12 @@
 package example.armeria.rest.blog;
 
+import com.linecorp.armeria.common.metric.MeterIdPrefixFunction;
 import com.linecorp.armeria.server.logging.LoggingService;
+import com.linecorp.armeria.server.metric.MetricCollectingService;
+import com.linecorp.armeria.server.metric.MetricCollectingServiceBuilder;
+import com.linecorp.armeria.server.metric.PrometheusExpositionService;
+import io.micrometer.prometheus.PrometheusConfig;
+import io.micrometer.prometheus.PrometheusMeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,11 +23,15 @@ public class Main {
                 DocService.builder()
                         .exampleRequests(BlogService.class, "createBlogPost", "{\"title\":\"My first blog\", \"content\":\"Hello Armeria!\"}")
                         .build();
+        PrometheusMeterRegistry meterRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
 
         return sb.http(port)
                 .decorator(LoggingService.newDecorator())
                 .annotatedService(new BlogService())
                 .serviceUnder("/docs", docService)
+                .meterRegistry(meterRegistry)
+                .service("/metrics", PrometheusExpositionService.of(meterRegistry.getPrometheusRegistry()))
+                .decorator(MetricCollectingService.builder(MeterIdPrefixFunction.ofDefault("my.metric")).newDecorator())
                 .build();
     }
 

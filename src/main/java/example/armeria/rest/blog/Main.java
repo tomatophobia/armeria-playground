@@ -1,6 +1,7 @@
 package example.armeria.rest.blog;
 
 import com.linecorp.armeria.common.metric.MeterIdPrefixFunction;
+import com.linecorp.armeria.server.healthcheck.HealthCheckService;
 import com.linecorp.armeria.server.logging.LoggingService;
 import com.linecorp.armeria.server.metric.MetricCollectingService;
 import com.linecorp.armeria.server.metric.MetricCollectingServiceBuilder;
@@ -26,9 +27,14 @@ public class Main {
         PrometheusMeterRegistry meterRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
 
         return sb.http(port)
+                .http(9090)
                 .decorator(LoggingService.newDecorator())
+                .defaultVirtualHost()
                 .annotatedService(new BlogService())
+                .and()
+                .virtualHost(9090)
                 .serviceUnder("/docs", docService)
+                .and()
                 .meterRegistry(meterRegistry)
                 .service("/metrics", PrometheusExpositionService.of(meterRegistry.getPrometheusRegistry()))
                 .decorator(MetricCollectingService.builder(MeterIdPrefixFunction.ofDefault("my.metric")).newDecorator())

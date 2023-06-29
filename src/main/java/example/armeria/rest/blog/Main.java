@@ -1,6 +1,8 @@
 package example.armeria.rest.blog;
 
+import com.linecorp.armeria.common.DependencyInjector;
 import com.linecorp.armeria.common.metric.MeterIdPrefixFunction;
+import com.linecorp.armeria.server.auth.AuthService;
 import com.linecorp.armeria.server.healthcheck.HealthCheckService;
 import com.linecorp.armeria.server.logging.LoggingService;
 import com.linecorp.armeria.server.metric.MetricCollectingService;
@@ -33,7 +35,7 @@ public class Main {
                 .annotatedService(new BlogService())
                 .and()
                 .virtualHost(9090)
-                .serviceUnder("/docs", docService)
+                .serviceUnder("/docs", docService) // 서로 다른 virtual host에 속하므로 동작하지 않는다.
                 .and()
                 .meterRegistry(meterRegistry)
                 .service("/metrics", PrometheusExpositionService.of(meterRegistry.getPrometheusRegistry()))

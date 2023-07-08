@@ -2,6 +2,7 @@ package example.armeria.rest.blog;
 
 import com.linecorp.armeria.common.DependencyInjector;
 import com.linecorp.armeria.common.metric.MeterIdPrefixFunction;
+import com.linecorp.armeria.internal.common.RequestContextExtension;
 import com.linecorp.armeria.server.auth.AuthService;
 import com.linecorp.armeria.server.healthcheck.HealthCheckService;
 import com.linecorp.armeria.server.logging.LoggingService;

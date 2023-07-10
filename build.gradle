@@ -15,7 +15,7 @@ dependencies {
     implementation "com.linecorp.armeria:armeria:1.24.0"
     implementation "com.linecorp.armeria:armeria-grpc:1.24.0"
     implementation "com.linecorp.armeria:armeria-graphql:1.24.0"
-//    implementation "com.linecorp.armeria:armeria-logback"
+    implementation "com.linecorp.armeria:armeria-logback:1.24.0"
 
     implementation "io.micrometer:micrometer-registry-prometheus:1.11.0"
 

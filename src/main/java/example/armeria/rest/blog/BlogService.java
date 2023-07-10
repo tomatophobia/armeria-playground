@@ -1,5 +1,7 @@
 package example.armeria.rest.blog;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
@@ -72,6 +74,17 @@ public class BlogService {
     @ExceptionHandler(BadRequestExceptionHandler.class)
     public HttpResponse deleteBlogPost(@Param int id) {
         logger.debug("deleteBlogPost " + id);
+//
+//        final Instant start = Instant.now();
+//        Instant finish = Instant.now();
+//        long timeElapsed = Duration.between(start, finish).toMillis();
+//        while (timeElapsed < 1000 * 10) {
+//            for (int i = 0; i < 100000000; i++) {}
+//            finish = Instant.now();
+//            timeElapsed = Duration.between(start, finish).toMillis();
+//        }
+//        logger.debug("deleteBlogPost end");
+//
         BlogPost removed = blogPosts.remove(id);
         if (removed == null) {
             throw new IllegalArgumentException("The blog post does not exist. id: " + id);

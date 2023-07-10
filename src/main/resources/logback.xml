@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] [traceId=%X{traceId}] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] [trace-id=%X{traceId}] [request-id=%X{req.id}] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
+    <appender name="RCEA" class="com.linecorp.armeria.common.logback.RequestContextExportingAppender">
+        <appender-ref ref="CONSOLE" />
+        <export>req.id</export>
+    </appender>
+
     <root level="debug">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="RCEA" />
     </root>
 </configuration>

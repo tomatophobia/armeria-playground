@@ -13,6 +13,8 @@ import com.linecorp.armeria.server.Server;
 import com.linecorp.armeria.server.ServerBuilder;
 import com.linecorp.armeria.server.docs.DocService;
 
+import java.time.Duration;
+
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
@@ -45,6 +47,7 @@ public class Main {
         return serverBuilder.http(port)
                 .decorator(LoggingDecoratingService.newDecorator())
                 .annotatedService(new BlogService())
+                .requestTimeout(Duration.ofSeconds(100))
                 .build();
     }
 

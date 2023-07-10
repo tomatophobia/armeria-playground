@@ -20,13 +20,17 @@ import com.linecorp.armeria.server.annotation.ProducesJson;
 import com.linecorp.armeria.server.annotation.Put;
 import com.linecorp.armeria.server.annotation.RequestConverter;
 import com.linecorp.armeria.server.annotation.RequestObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BlogService {
     private final Map<Integer, BlogPost> blogPosts = new ConcurrentHashMap<>();
+    private static final Logger logger = LoggerFactory.getLogger(BlogService.class);
 
     @Post("/blogs")
     @RequestConverter(BlogPostRequestConverter.class)
     public HttpResponse createBlogPost(BlogPost blogPost) {
+        logger.debug("createBlogPost");
         blogPosts.put(blogPost.getId(), blogPost);
         return HttpResponse.ofJson(blogPost);
     }
@@ -34,6 +38,7 @@ public class BlogService {
     @Get("/blogs")
     @ProducesJson
     public Iterable<BlogPost> getBlogPosts(@Param @Default("true") boolean descending) {
+        logger.debug("getBlogPosts");
         if (descending) {
             return blogPosts.entrySet()
                     .stream()
@@ -45,12 +50,14 @@ public class BlogService {
 
     @Get("/blogs/:id")
     public HttpResponse getBlogPost(@Param int id) {
+        logger.debug("getBlogPost " + id);
         BlogPost blogPost = blogPosts.get(id);
         return HttpResponse.ofJson(blogPost);
     }
 
     @Put("/blogs/:id")
     public HttpResponse updateBlogPost(@Param int id, @RequestObject BlogPost blogPost) {
+        logger.debug("updateBlogPost " + id);
         BlogPost oldBlogPost = blogPosts.get(id);
         if (oldBlogPost == null) {
             return HttpResponse.of(HttpStatus.NOT_FOUND);
@@ -64,6 +71,7 @@ public class BlogService {
     @Delete("/blogs/:id")
     @ExceptionHandler(BadRequestExceptionHandler.class)
     public HttpResponse deleteBlogPost(@Param int id) {
+        logger.debug("deleteBlogPost " + id);
         BlogPost removed = blogPosts.remove(id);
         if (removed == null) {
             throw new IllegalArgumentException("The blog post does not exist. id: " + id);

@@ -1,6 +1,8 @@
 package example.armeria.rest.blog;
 
+import com.google.common.util.concurrent.MoreExecutors;
 import com.linecorp.armeria.common.metric.MeterIdPrefixFunction;
+import com.linecorp.armeria.server.ServerListener;
 import com.linecorp.armeria.server.logging.LoggingService;
 import com.linecorp.armeria.server.metric.MetricCollectingService;
 import com.linecorp.armeria.server.metric.PrometheusExpositionService;
@@ -13,7 +15,8 @@ import com.linecorp.armeria.server.Server;
 import com.linecorp.armeria.server.ServerBuilder;
 import com.linecorp.armeria.server.docs.DocService;
 
-import java.time.Duration;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
@@ -43,15 +46,37 @@ public class Main {
 
     static Server server2(int port) {
         final ServerBuilder serverBuilder = Server.builder();
+        final ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
+            while (true) {
+                System.out.println("XXX");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        final ServerListener listener = ServerListener
+                .builder()
+                .whenStopping((s) -> {
+                    System.out.println("try stop");
+                    executor.shutdownNow();
+                })
+                .build();
 
         return serverBuilder.http(port)
-                .decorator(LoggingDecoratingService.newDecorator())
                 .annotatedService(new BlogService())
-                .requestTimeout(Duration.ofSeconds(100))
+                .serverListener(listener)
                 .build();
     }
 
     public static void main(String[] args) throws Exception {
+        final Server s = server1(8080);
+        s.closeOnJvmShutdown();
+        s.start().join();
+
         final Server server = server2(8080);
 
         server.closeOnJvmShutdown();

@@ -27,11 +27,11 @@ message CreateBlogPostRequest {
   string content = 2;
 }
 
-message GetBlogPostRequest {    // For retrieving a single post
+message GetBlogPostRequest {// For retrieving a single post
   int32 id = 1;
 }
 
-message ListBlogPostsRequest {  // For retrieving multiple posts
+message ListBlogPostsRequest {// For retrieving multiple posts
   bool descending = 1;
 }
 

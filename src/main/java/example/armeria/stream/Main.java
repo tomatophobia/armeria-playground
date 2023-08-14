@@ -4,7 +4,6 @@ import com.linecorp.armeria.common.HttpData;
 import com.linecorp.armeria.common.HttpResponse;
 import com.linecorp.armeria.common.HttpResponseWriter;
 import com.linecorp.armeria.common.ResponseHeaders;
-import com.linecorp.armeria.common.stream.StreamMessage;
 import com.linecorp.armeria.server.Server;
 import com.linecorp.armeria.server.file.HttpFile;
 import org.slf4j.Logger;

@@ -1,12 +1,10 @@
 package example.armeria.websocket;
 
-import com.linecorp.armeria.common.ByteBufAccessMode;
 import com.linecorp.armeria.common.websocket.*;
 import com.linecorp.armeria.server.Server;
 import com.linecorp.armeria.server.ServerBuilder;
 import com.linecorp.armeria.server.logging.LoggingService;
 import com.linecorp.armeria.server.websocket.WebSocketService;
-import com.linecorp.armeria.server.websocket.WebSocketServiceBuilder;
 import com.linecorp.armeria.server.websocket.WebSocketServiceHandler;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;

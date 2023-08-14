@@ -9,8 +9,6 @@ import io.netty.buffer.ByteBufUtil;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
-import java.time.Duration;
-
 public class AbstractWebSocketHandler implements WebSocketServiceHandler {
 
     @Override
@@ -59,9 +57,11 @@ public class AbstractWebSocketHandler implements WebSocketServiceHandler {
         return writer;
     }
 
-    void onOpen(WebSocketWriter writer) {}
+    void onOpen(WebSocketWriter writer) {
+    }
 
-    void onText(WebSocketWriter writer, String message) {}
+    void onText(WebSocketWriter writer, String message) {
+    }
 
     void onBinary(WebSocketWriter writer, ByteBuf message) {
         try {
@@ -75,7 +75,8 @@ public class AbstractWebSocketHandler implements WebSocketServiceHandler {
         }
     }
 
-    void onBinary(WebSocketWriter writer, byte[] message) {}
+    void onBinary(WebSocketWriter writer, byte[] message) {
+    }
 
     void onClose(WebSocketWriter writer, WebSocketCloseStatus status, String reason) {
         writer.close(status, reason);

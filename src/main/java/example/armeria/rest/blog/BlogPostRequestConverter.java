@@ -1,15 +1,14 @@
 package example.armeria.rest.blog;
 
-import java.lang.reflect.ParameterizedType;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.linecorp.armeria.common.AggregatedHttpRequest;
 import com.linecorp.armeria.common.annotation.Nullable;
 import com.linecorp.armeria.server.ServiceRequestContext;
 import com.linecorp.armeria.server.annotation.RequestConverterFunction;
+
+import java.lang.reflect.ParameterizedType;
+import java.util.concurrent.atomic.AtomicInteger;
 
 final class BlogPostRequestConverter implements RequestConverterFunction {
     private static final ObjectMapper mapper = new ObjectMapper();

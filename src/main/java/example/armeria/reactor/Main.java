@@ -1,6 +1,5 @@
 package example.armeria.reactor;
 
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
 

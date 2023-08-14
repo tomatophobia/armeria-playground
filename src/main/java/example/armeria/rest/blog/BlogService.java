@@ -1,29 +1,21 @@
 package example.armeria.rest.blog;
 
-import java.time.Duration;
-import java.time.Instant;
+import com.linecorp.armeria.client.WebClient;
+import com.linecorp.armeria.common.*;
+import com.linecorp.armeria.common.util.SafeCloseable;
+import com.linecorp.armeria.server.annotation.*;
+import io.netty.handler.codec.http.HttpHeaderValues;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
-
-import com.linecorp.armeria.common.HttpResponse;
-import com.linecorp.armeria.common.HttpStatus;
-import com.linecorp.armeria.server.annotation.Blocking;
-import com.linecorp.armeria.server.annotation.Default;
-import com.linecorp.armeria.server.annotation.Delete;
-import com.linecorp.armeria.server.annotation.ExceptionHandler;
-import com.linecorp.armeria.server.annotation.Get;
-import com.linecorp.armeria.server.annotation.Param;
-import com.linecorp.armeria.server.annotation.Post;
-import com.linecorp.armeria.server.annotation.ProducesJson;
-import com.linecorp.armeria.server.annotation.Put;
-import com.linecorp.armeria.server.annotation.RequestConverter;
-import com.linecorp.armeria.server.annotation.RequestObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BlogService {
     private final Map<Integer, BlogPost> blogPosts = new ConcurrentHashMap<>();
@@ -57,6 +49,41 @@ public class BlogService {
         return HttpResponse.ofJson(blogPost);
     }
 
+    @Get("/blogs/test")
+    public HttpResponse getTest(RequestContext ctx) {
+        logger.info("getTest");
+        CompletableFuture<HttpResponse> future = new CompletableFuture<>();
+        WebClient client = WebClient.of("https://icanhazdadjoke.com");
+        HttpResponse response = client.execute(RequestHeaders.of(HttpMethod.GET, "/", HttpHeaderNames.ACCEPT, HttpHeaderValues.APPLICATION_JSON));
+        // 1. 수동으로 컨텍스트 정보 전달
+//        response.aggregate().thenAccept(aggregatedRes -> {
+//            try (SafeCloseable ignored = ctx.push()) {
+//                logger.info("another executor");
+//                throw new IllegalStateException("test");
+////                future.complete(aggregatedRes.toHttpResponse());
+//            }
+//        }).whenComplete((t, u) -> {
+//            if (u != null) {
+//                logger.info("예외 발생");
+//            }
+//        });
+        // 2. ContextAwareFuture
+//        CompletableFuture<AggregatedHttpResponse> contextAwareFuture = ctx.makeContextAware(response.aggregate());
+//        contextAwareFuture.thenAccept(res -> {
+//            logger.info("응답");
+//            throw new IllegalStateException("예외");
+////            future.complete(res.toHttpResponse());
+//        });
+        // 3. ContextAwareExecutor
+        Executor contextAwareExecutor = ctx.eventLoop();
+        response.aggregate().thenAcceptAsync(res -> {
+            logger.info("응답");
+            throw new IllegalStateException("예외");
+        }, contextAwareExecutor);
+
+        return HttpResponse.from(future);
+    }
+
     @Put("/blogs/:id")
     public HttpResponse updateBlogPost(@Param int id, @RequestObject BlogPost blogPost) {
         logger.debug("updateBlogPost " + id);
@@ -74,17 +101,6 @@ public class BlogService {
     @ExceptionHandler(BadRequestExceptionHandler.class)
     public HttpResponse deleteBlogPost(@Param int id) {
         logger.debug("deleteBlogPost " + id);
-//
-//        final Instant start = Instant.now();
-//        Instant finish = Instant.now();
-//        long timeElapsed = Duration.between(start, finish).toMillis();
-//        while (timeElapsed < 1000 * 10) {
-//            for (int i = 0; i < 100000000; i++) {}
-//            finish = Instant.now();
-//            timeElapsed = Duration.between(start, finish).toMillis();
-//        }
-//        logger.debug("deleteBlogPost end");
-//
         BlogPost removed = blogPosts.remove(id);
         if (removed == null) {
             throw new IllegalArgumentException("The blog post does not exist. id: " + id);

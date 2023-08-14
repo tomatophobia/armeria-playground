@@ -50,24 +50,18 @@ public final class BlogClient {
     }
 
     void testRun() {
-        createBlogPost("Another blog post", "Creating a post via createBlogPost().");
-        deleteBlogPost(0);
-        listBlogPosts();
-//        getBlogPost(1);
+//        createBlogPost("Another blog post", "Creating a post via createBlogPost().");
+//        deleteBlogPost(0);
+//        listBlogPosts();
+        getBlogPost(1);
 //        updateBlogPost(10000, "New title", "New content.");
 //        getBlogPost(1);
     }
 
     public static void main(String[] args) throws Exception {
-//        client = GrpcClients.newClient("http://127.0.0.1:8080/", BlogServiceGrpc.BlogServiceBlockingStub.class);
         client = GrpcClients.builder("http://127.0.0.1:8080/")
                 .decorator(LoggingClient.newDecorator())
                 .build(BlogServiceGrpc.BlogServiceBlockingStub.class);
-        CreateBlogPostRequest request = CreateBlogPostRequest.newBuilder()
-                .setTitle("My first blog")
-                .setContent("Yay")
-                .build();
-        BlogPost response = client.createBlogPost(request);
 
         BlogClient blogClient = new BlogClient();
         blogClient.testRun();

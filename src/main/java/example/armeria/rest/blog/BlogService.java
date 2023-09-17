@@ -55,7 +55,7 @@ public class BlogService {
         CompletableFuture<HttpResponse> future = new CompletableFuture<>();
         WebClient client = WebClient.of("https://icanhazdadjoke.com");
         HttpResponse response = client.execute(RequestHeaders.of(HttpMethod.GET, "/", HttpHeaderNames.ACCEPT, HttpHeaderValues.APPLICATION_JSON));
-        // 1. 수동으로 컨텍스트 정보 전달
+//         1. 수동으로 컨텍스트 정보 전달
 //        response.aggregate().thenAccept(aggregatedRes -> {
 //            try (SafeCloseable ignored = ctx.push()) {
 //                logger.info("another executor");
@@ -68,18 +68,18 @@ public class BlogService {
 //            }
 //        });
         // 2. ContextAwareFuture
-//        CompletableFuture<AggregatedHttpResponse> contextAwareFuture = ctx.makeContextAware(response.aggregate());
-//        contextAwareFuture.thenAccept(res -> {
+        CompletableFuture<AggregatedHttpResponse> contextAwareFuture = ctx.makeContextAware(response.aggregate());
+        CompletableFuture f = contextAwareFuture.thenAccept(res -> {
+            logger.info("응답");
+//            throw new IllegalStateException("예외");
+            future.complete(res.toHttpResponse());
+        });
+        // 3. ContextAwareExecutor
+//        Executor contextAwareExecutor = ctx.eventLoop();
+//        response.aggregate().thenAcceptAsync(res -> {
 //            logger.info("응답");
 //            throw new IllegalStateException("예외");
-////            future.complete(res.toHttpResponse());
-//        });
-        // 3. ContextAwareExecutor
-        Executor contextAwareExecutor = ctx.eventLoop();
-        response.aggregate().thenAcceptAsync(res -> {
-            logger.info("응답");
-            throw new IllegalStateException("예외");
-        }, contextAwareExecutor);
+//        }, contextAwareExecutor);
 
         return HttpResponse.from(future);
     }

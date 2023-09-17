@@ -12,10 +12,14 @@ repositories {
 }
 
 dependencies {
-    implementation "com.linecorp.armeria:armeria:1.24.0"
-    implementation "com.linecorp.armeria:armeria-grpc:1.24.0"
-    implementation "com.linecorp.armeria:armeria-graphql:1.24.0"
-    implementation "com.linecorp.armeria:armeria-logback:1.24.0"
+    ['armeria',
+     'armeria-grpc',
+     'armeria-graphql',
+     'armeria-logback',
+     'armeria-junit5'
+    ].each {
+        implementation "com.linecorp.armeria:${it}:1.25.2"
+    }
 
     implementation "io.micrometer:micrometer-registry-prometheus:1.11.0"
 
@@ -38,6 +42,7 @@ dependencies {
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.1"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.1"
+    testImplementation "org.assertj:assertj-core:3.11.1"
 }
 
 protobuf {
